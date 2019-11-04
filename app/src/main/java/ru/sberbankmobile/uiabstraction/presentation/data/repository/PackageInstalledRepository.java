@@ -28,15 +28,15 @@ public class PackageInstalledRepository {
         mPackageManager = context.getPackageManager();
     }
 
-    public void loadDataAsync(boolean isSystem, @NonNull OnLoadingFinishListener onLoadingFinishListener) {
+    public void loadDataAsync(boolean loadSystemApps, @NonNull OnLoadingFinishListener onLoadingFinishListener) {
         LoadPackagesTask loadingPackagesAsyncTask = new LoadPackagesTask(onLoadingFinishListener);
-        loadingPackagesAsyncTask.execute(isSystem);
+        loadingPackagesAsyncTask.execute(loadSystemApps);
     }
 
-    public List<InstalledPackageModel> getData(boolean isSystem) {
+    public List<InstalledPackageModel> getData(boolean loadSystemApps) {
         List<InstalledPackageModel> installedPackageModelList = new ArrayList<>();
 
-        for (String packageName : getInstalledPackages(isSystem)) {
+        for (String packageName : getInstalledPackages(loadSystemApps)) {
             InstalledPackageModel installedPackageModel = new InstalledPackageModel(
                     getAppName(packageName), packageName, getAppIcon(packageName));
 
@@ -46,7 +46,7 @@ public class PackageInstalledRepository {
         return installedPackageModelList;
     }
 
-    private List<String> getInstalledPackages(boolean isSystem) {
+    private List<String> getInstalledPackages(boolean loadSystemApps) {
         List<String> appPackageNames = new ArrayList<>();
 
         Intent intent = new Intent(Intent.ACTION_MAIN, null);
@@ -55,10 +55,14 @@ public class PackageInstalledRepository {
         List<ResolveInfo> resolveInfoList = mPackageManager.queryIntentActivities(intent, 0);
 
         for (ResolveInfo resolveInfo : resolveInfoList) {
-
-            if (isSystem || isSystemPackage(resolveInfo)) {
+            if(loadSystemApps) {
                 ActivityInfo activityInfo = resolveInfo.activityInfo;
                 appPackageNames.add(activityInfo.applicationInfo.packageName);
+            } else {
+                if(!isSystemPackage(resolveInfo)) {
+                    ActivityInfo activityInfo = resolveInfo.activityInfo;
+                    appPackageNames.add(activityInfo.applicationInfo.packageName);
+                }
             }
         }
 

@@ -33,7 +33,7 @@ public class MainPresenter {
         }
     }
 
-    public void loadDataAsync() {
+    public void loadDataAsync(boolean loadSystemApps) {
         if (mMainActivityWeakReference.get() != null) {
             mMainActivityWeakReference.get().showProgress();
         }
@@ -45,7 +45,7 @@ public class MainPresenter {
             }
         };
 
-        mPackageInstalledRepository.loadDataAsync(true, onLoadingFinishListener);
+        mPackageInstalledRepository.loadDataAsync(loadSystemApps, onLoadingFinishListener);
     }
 
     public void detachView() {

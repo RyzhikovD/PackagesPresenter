@@ -3,6 +3,7 @@ package ru.sberbankmobile.uiabstraction.presentation.view;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -20,6 +21,7 @@ public class MainActivity extends AppCompatActivity implements IMainActivity {
     private RecyclerView mRecyclerView;
     private View mProgressFrameLayout;
     private Button mButtonLoadPackages;
+    private CheckBox mCheckBoxLoadSystemApps;
 
     private MainPresenter mMainPresenter;
 
@@ -50,12 +52,13 @@ public class MainActivity extends AppCompatActivity implements IMainActivity {
         mRecyclerView = findViewById(R.id.recycler_view);
         mRecyclerView.setLayoutManager(layoutManager);
         mButtonLoadPackages = findViewById(R.id.button_load_packages);
+        mCheckBoxLoadSystemApps = findViewById(R.id.checkbox_system_applications);
 
         mProgressFrameLayout = findViewById(R.id.progress_frame_layout);
     }
 
     private void initLoadButton() {
-        mButtonLoadPackages.setOnClickListener(v -> mMainPresenter.loadDataAsync());
+        mButtonLoadPackages.setOnClickListener(v -> mMainPresenter.loadDataAsync(mCheckBoxLoadSystemApps.isChecked()));
     }
 
 
