@@ -23,6 +23,9 @@ public class PackageInstalledRepository {
     private final Context mContext;
     private final PackageManager mPackageManager;
 
+    private final int NON_SYSTEM_APP_INDEX = 0;
+    private final int SYSTEM_APP_INDEX = 1;
+
     public PackageInstalledRepository(@NonNull Context context) {
         mContext = context;
         mPackageManager = context.getPackageManager();
@@ -36,9 +39,22 @@ public class PackageInstalledRepository {
     public List<InstalledPackageModel> getData(boolean loadSystemApps) {
         List<InstalledPackageModel> installedPackageModelList = new ArrayList<>();
 
-        for (String packageName : getInstalledPackages(loadSystemApps)) {
+        List<String> installedPackagesNames = getInstalledPackages(loadSystemApps).get(NON_SYSTEM_APP_INDEX);
+        List<String> systemPackagesNames = getInstalledPackages(loadSystemApps).get(SYSTEM_APP_INDEX);
+
+
+        for (String packageName : installedPackagesNames) {
             InstalledPackageModel installedPackageModel = new InstalledPackageModel(
                     getAppName(packageName), packageName, getAppIcon(packageName));
+
+            installedPackageModelList.add(installedPackageModel);
+        }
+
+        for (String packageName : systemPackagesNames) {
+            InstalledPackageModel installedPackageModel = new InstalledPackageModel(
+                    getAppName(packageName), packageName, getAppIcon(packageName));
+
+            installedPackageModel.setAppIcon(mContext.getDrawable(R.drawable.ic_info_blue));
 
             installedPackageModelList.add(installedPackageModel);
         }
@@ -46,8 +62,9 @@ public class PackageInstalledRepository {
         return installedPackageModelList;
     }
 
-    private List<String> getInstalledPackages(boolean loadSystemApps) {
-        List<String> appPackageNames = new ArrayList<>();
+    private List<List<String>> getInstalledPackages(boolean loadSystemApps) {
+        List<String> installedPackagesNames = new ArrayList<>();
+        List<String> systemPackagesNames = new ArrayList<>();
 
         Intent intent = new Intent(Intent.ACTION_MAIN, null);
         intent.addCategory(Intent.CATEGORY_LAUNCHER);
@@ -57,16 +74,24 @@ public class PackageInstalledRepository {
         for (ResolveInfo resolveInfo : resolveInfoList) {
             if (loadSystemApps) {
                 ActivityInfo activityInfo = resolveInfo.activityInfo;
-                appPackageNames.add(activityInfo.applicationInfo.packageName);
+                if (isSystemPackage(resolveInfo)) {
+                    systemPackagesNames.add(activityInfo.applicationInfo.packageName);
+                } else {
+                    installedPackagesNames.add(activityInfo.applicationInfo.packageName);
+                }
             } else {
                 if (!isSystemPackage(resolveInfo)) {
                     ActivityInfo activityInfo = resolveInfo.activityInfo;
-                    appPackageNames.add(activityInfo.applicationInfo.packageName);
+                    installedPackagesNames.add(activityInfo.applicationInfo.packageName);
                 }
             }
         }
 
-        return appPackageNames;
+        List<List<String>> systemAndInstalledPackagesNames = new ArrayList<>(2);
+        systemAndInstalledPackagesNames.add(NON_SYSTEM_APP_INDEX, installedPackagesNames);
+        systemAndInstalledPackagesNames.add(SYSTEM_APP_INDEX, systemPackagesNames);
+
+        return systemAndInstalledPackagesNames;
     }
 
     private boolean isSystemPackage(ResolveInfo resolveInfo) {

@@ -18,27 +18,42 @@
             android:id="@+id/app_icon_image_view"
             android:layout_width="50dp"
             android:layout_height="50dp"
+            android:contentDescription="@string/application_icon"
             android:padding="4dp"
-            tools:src="@mipmap/ic_launcher"
-            android:contentDescription="@string/application_icon" />
+            tools:src="@mipmap/ic_launcher" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="horizontal">
 
-            <TextView
-                android:id="@+id/app_name_text_view"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                tools:text="Sberbank" />
+                android:layout_weight="1"
+                android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/app_package_name_text_view"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                tools:text="ru.sberbankmobile" />
+                <TextView
+                    android:id="@+id/app_name_text_view"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    tools:text="Sberbank" />
+
+                <TextView
+                    android:id="@+id/app_package_name_text_view"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    tools:text="ru.sberbankmobile" />
+            </LinearLayout>
+
+            <ImageView
+                android:id="@+id/img_system_app"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:contentDescription="@string/img_system_app" />
+
         </LinearLayout>
+
     </LinearLayout>
 
 </androidx.cardview.widget.CardView>

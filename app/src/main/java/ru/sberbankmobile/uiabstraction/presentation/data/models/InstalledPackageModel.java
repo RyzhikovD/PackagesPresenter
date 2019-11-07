@@ -2,6 +2,8 @@ package ru.sberbankmobile.uiabstraction.presentation.data.models;
 
 import android.graphics.drawable.Drawable;
 
+import androidx.annotation.Nullable;
+
 import java.util.Objects;
 
 public class InstalledPackageModel {
@@ -9,6 +11,8 @@ public class InstalledPackageModel {
     private String mAppName;
     private String mPackageName;
     private Drawable mAppIcon;
+    @Nullable
+    private Drawable mSystemAppIcon;
 
     public InstalledPackageModel(String appName, String packageName, Drawable appIcon) {
         mAppName = appName;
@@ -26,6 +30,14 @@ public class InstalledPackageModel {
 
     public Drawable getAppIcon() {
         return mAppIcon;
+    }
+
+    public Drawable getSystemAppIcon() {
+        return mSystemAppIcon;
+    }
+
+    public void setAppIcon(Drawable appIcon) {
+        mSystemAppIcon = appIcon;
     }
 
     @Override
