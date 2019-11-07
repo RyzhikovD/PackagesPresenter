@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".presentation.view.MainActivity">
+    tools:context=".presentation.presentation.view.MainActivity">
 
     <LinearLayout
         android:id="@+id/linear_layout_tool_bar"
@@ -30,11 +30,18 @@
 
     </LinearLayout>
 
+    <Spinner
+        android:id="@+id/spinner_sort"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/linear_layout_tool_bar"
+        android:layout_margin="@dimen/default_margin" />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/linear_layout_tool_bar" />
+        android:layout_below="@+id/spinner_sort" />
 
     <FrameLayout
         android:id="@+id/progress_frame_layout"

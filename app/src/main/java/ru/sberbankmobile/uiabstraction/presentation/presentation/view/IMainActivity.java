@@ -1,8 +1,8 @@
-package ru.sberbankmobile.uiabstraction.presentation.view;
+package ru.sberbankmobile.uiabstraction.presentation.presentation.view;
 
 import java.util.List;
 
-import ru.sberbankmobile.uiabstraction.presentation.data.model.InstalledPackageModel;
+import ru.sberbankmobile.uiabstraction.presentation.data.models.InstalledPackageModel;
 
 public interface IMainActivity {
 

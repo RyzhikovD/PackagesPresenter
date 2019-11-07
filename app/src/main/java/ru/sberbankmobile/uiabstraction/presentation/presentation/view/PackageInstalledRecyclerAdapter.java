@@ -1,4 +1,4 @@
-package ru.sberbankmobile.uiabstraction.presentation.view;
+package ru.sberbankmobile.uiabstraction.presentation.presentation.view;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,17 +9,25 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import ru.sberbankmobile.uiabstraction.R;
-import ru.sberbankmobile.uiabstraction.presentation.data.model.InstalledPackageModel;
+import ru.sberbankmobile.uiabstraction.presentation.data.models.InstalledPackageModel;
 
 public class PackageInstalledRecyclerAdapter extends RecyclerView.Adapter<PackageInstalledRecyclerAdapter.PackageInstalledViewHolder> {
 
     private List<InstalledPackageModel> mInstalledPackageModels;
 
-    PackageInstalledRecyclerAdapter(List<InstalledPackageModel> installedPackageModels) {
-        mInstalledPackageModels = installedPackageModels;
+    PackageInstalledRecyclerAdapter(List<InstalledPackageModel> installedPackageModels, SortingMode sortingMode) {
+
+        if (sortingMode == SortingMode.SORT_BY_APP_NAME) {
+            Collections.sort(installedPackageModels, (a, b) -> a.getAppName().compareTo(b.getAppName()));
+        } else if (sortingMode == SortingMode.SORT_BY_PACKAGE_NAME) {
+            Collections.sort(installedPackageModels, (a, b) -> a.getAppPackageName().compareTo(b.getAppPackageName()));
+        }
+        mInstalledPackageModels = new ArrayList<>(installedPackageModels);
     }
 
     @NonNull
@@ -57,5 +65,28 @@ public class PackageInstalledRecyclerAdapter extends RecyclerView.Adapter<Packag
             mPackageNameTextView.setText(installedPackageModel.getAppPackageName());
             mIconImageView.setImageDrawable(installedPackageModel.getAppIcon());
         }
+
     }
+
+//    public void setSortingMode(SortingMode sortingMode) {
+//        mSortingMode = sortingMode;
+//
+//        if (mSortingMode == SortingMode.SORT_BY_APP_NAME) {
+//            Collections.sort(mInstalledPackageModels, (a, b) -> a.getAppName().compareTo(b.getAppName()));
+//        } else if (mSortingMode == SortingMode.SORT_BY_PACKAGE_NAME) {
+//            Collections.sort(mInstalledPackageModels, (a, b) -> a.getAppPackageName().compareTo(b.getAppPackageName()));
+//        }
+//
+//        notifyDataSetChanged();
+//    }
+//
+//    public void setInstalledPackageModels(List<InstalledPackageModel> models) {
+//        if (mSortingMode == SortingMode.SORT_BY_APP_NAME) {
+//            Collections.sort(models, (a, b) -> a.getAppName().compareTo(b.getAppName()));
+//        } else if (mSortingMode == SortingMode.SORT_BY_PACKAGE_NAME) {
+//            Collections.sort(models, (a, b) -> a.getAppPackageName().compareTo(b.getAppPackageName()));
+//        }
+//        mInstalledPackageModels = new ArrayList<>(models);
+//        notifyDataSetChanged();
+//    }
 }

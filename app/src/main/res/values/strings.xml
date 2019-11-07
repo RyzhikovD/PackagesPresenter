@@ -3,4 +3,6 @@
     <string name="load_packages">Load Packages</string>
     <string name="system_applications">System Applications</string>
     <string name="application_icon">application_icon</string>
+    <string name="sort_by_app_name">Сортировать по названию приложения</string>
+    <string name="sort_by_package_name">Сортировать по имени пакета</string>
 </resources>

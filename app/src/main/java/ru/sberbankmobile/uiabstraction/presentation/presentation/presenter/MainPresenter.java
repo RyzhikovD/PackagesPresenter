@@ -1,13 +1,13 @@
-package ru.sberbankmobile.uiabstraction.presentation.presenter;
+package ru.sberbankmobile.uiabstraction.presentation.presentation.presenter;
 
 import androidx.annotation.NonNull;
 
 import java.lang.ref.WeakReference;
 import java.util.List;
 
-import ru.sberbankmobile.uiabstraction.presentation.data.model.InstalledPackageModel;
+import ru.sberbankmobile.uiabstraction.presentation.data.models.InstalledPackageModel;
 import ru.sberbankmobile.uiabstraction.presentation.data.repository.PackageInstalledRepository;
-import ru.sberbankmobile.uiabstraction.presentation.view.IMainActivity;
+import ru.sberbankmobile.uiabstraction.presentation.presentation.view.IMainActivity;
 
 public class MainPresenter {
 
@@ -19,7 +19,7 @@ public class MainPresenter {
         mPackageInstalledRepository = packageInstalledRepository;
     }
 
-    void loadData() {
+    public void loadData() {
         if (mMainActivityWeakReference.get() != null) {
             mMainActivityWeakReference.get().showProgress();
         }

@@ -1,4 +1,4 @@
-package ru.sberbankmobile.uiabstraction.presentation.data.model;
+package ru.sberbankmobile.uiabstraction.presentation.data.models;
 
 import android.graphics.drawable.Drawable;
 

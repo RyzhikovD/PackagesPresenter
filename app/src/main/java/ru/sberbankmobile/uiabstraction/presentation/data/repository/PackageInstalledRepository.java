@@ -16,7 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ru.sberbankmobile.uiabstraction.R;
-import ru.sberbankmobile.uiabstraction.presentation.data.model.InstalledPackageModel;
+import ru.sberbankmobile.uiabstraction.presentation.data.models.InstalledPackageModel;
 
 public class PackageInstalledRepository {
 
@@ -55,11 +55,11 @@ public class PackageInstalledRepository {
         List<ResolveInfo> resolveInfoList = mPackageManager.queryIntentActivities(intent, 0);
 
         for (ResolveInfo resolveInfo : resolveInfoList) {
-            if(loadSystemApps) {
+            if (loadSystemApps) {
                 ActivityInfo activityInfo = resolveInfo.activityInfo;
                 appPackageNames.add(activityInfo.applicationInfo.packageName);
             } else {
-                if(!isSystemPackage(resolveInfo)) {
+                if (!isSystemPackage(resolveInfo)) {
                     ActivityInfo activityInfo = resolveInfo.activityInfo;
                     appPackageNames.add(activityInfo.applicationInfo.packageName);
                 }

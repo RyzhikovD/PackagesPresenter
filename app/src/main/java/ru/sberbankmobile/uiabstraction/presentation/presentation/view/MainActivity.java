@@ -1,20 +1,24 @@
-package ru.sberbankmobile.uiabstraction.presentation.view;
+package ru.sberbankmobile.uiabstraction.presentation.presentation.view;
 
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.Spinner;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.Arrays;
 import java.util.List;
 
 import ru.sberbankmobile.uiabstraction.R;
-import ru.sberbankmobile.uiabstraction.presentation.data.model.InstalledPackageModel;
+import ru.sberbankmobile.uiabstraction.presentation.data.models.InstalledPackageModel;
 import ru.sberbankmobile.uiabstraction.presentation.data.repository.PackageInstalledRepository;
-import ru.sberbankmobile.uiabstraction.presentation.presenter.MainPresenter;
+import ru.sberbankmobile.uiabstraction.presentation.presentation.adapters.SortingSpinnerAdapter;
+import ru.sberbankmobile.uiabstraction.presentation.presentation.presenter.MainPresenter;
 
 public class MainActivity extends AppCompatActivity implements IMainActivity {
 
@@ -22,6 +26,8 @@ public class MainActivity extends AppCompatActivity implements IMainActivity {
     private View mProgressFrameLayout;
     private Button mButtonLoadPackages;
     private CheckBox mCheckBoxLoadSystemApps;
+    private Spinner mSortingSpinner;
+    private SortingMode mSortingMode;
 
     private MainPresenter mMainPresenter;
 
@@ -32,6 +38,7 @@ public class MainActivity extends AppCompatActivity implements IMainActivity {
 
         initViews();
         initLoadButton();
+        initSortingSpinner();
         providePresenter();
     }
 
@@ -53,12 +60,32 @@ public class MainActivity extends AppCompatActivity implements IMainActivity {
         mRecyclerView.setLayoutManager(layoutManager);
         mButtonLoadPackages = findViewById(R.id.button_load_packages);
         mCheckBoxLoadSystemApps = findViewById(R.id.checkbox_system_applications);
+        mSortingSpinner = findViewById(R.id.spinner_sort);
 
         mProgressFrameLayout = findViewById(R.id.progress_frame_layout);
     }
 
     private void initLoadButton() {
         mButtonLoadPackages.setOnClickListener(v -> mMainPresenter.loadDataAsync(mCheckBoxLoadSystemApps.isChecked()));
+    }
+
+    private void initSortingSpinner() {
+        final List<String> groupTypes = Arrays.asList(
+                getResources().getString(R.string.sort_by_app_name),
+                getResources().getString(R.string.sort_by_package_name));
+        mSortingSpinner.setAdapter(new SortingSpinnerAdapter(groupTypes));
+
+        mSortingSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                mSortingMode = SortingMode.values()[position];
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
     }
 
 
@@ -74,8 +101,8 @@ public class MainActivity extends AppCompatActivity implements IMainActivity {
 
     @Override
     public void showData(List<InstalledPackageModel> modelList) {
-        PackageInstalledRecyclerAdapter adapter = new PackageInstalledRecyclerAdapter(modelList);
+        PackageInstalledRecyclerAdapter recyclerAdapter = new PackageInstalledRecyclerAdapter(modelList, mSortingMode);
 
-        mRecyclerView.setAdapter(adapter);
+        mRecyclerView.setAdapter(recyclerAdapter);
     }
 }
