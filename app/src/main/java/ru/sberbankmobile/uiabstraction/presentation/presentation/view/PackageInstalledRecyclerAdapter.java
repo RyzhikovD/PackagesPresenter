@@ -1,6 +1,6 @@
 package ru.sberbankmobile.uiabstraction.presentation.presentation.view;
 
-import android.graphics.drawable.Drawable;
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,10 +8,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import ru.sberbankmobile.uiabstraction.R;
@@ -20,15 +20,11 @@ import ru.sberbankmobile.uiabstraction.presentation.data.models.InstalledPackage
 public class PackageInstalledRecyclerAdapter extends RecyclerView.Adapter<PackageInstalledRecyclerAdapter.PackageInstalledViewHolder> {
 
     private List<InstalledPackageModel> mInstalledPackageModels;
+    private Context mContext;
 
-    PackageInstalledRecyclerAdapter(List<InstalledPackageModel> installedPackageModels, SortingMode sortingMode) {
-
-        if (sortingMode == SortingMode.SORT_BY_APP_NAME) {
-            Collections.sort(installedPackageModels, (a, b) -> a.getAppName().compareTo(b.getAppName()));
-        } else if (sortingMode == SortingMode.SORT_BY_PACKAGE_NAME) {
-            Collections.sort(installedPackageModels, (a, b) -> a.getAppPackageName().compareTo(b.getAppPackageName()));
-        }
+    PackageInstalledRecyclerAdapter(List<InstalledPackageModel> installedPackageModels, Context context) {
         mInstalledPackageModels = new ArrayList<>(installedPackageModels);
+        mContext = context;
     }
 
     @NonNull
@@ -39,7 +35,7 @@ public class PackageInstalledRecyclerAdapter extends RecyclerView.Adapter<Packag
 
     @Override
     public void onBindViewHolder(@NonNull PackageInstalledViewHolder holder, int position) {
-        holder.bindView(mInstalledPackageModels.get(position));
+        holder.bindView(mInstalledPackageModels.get(position), mContext);
     }
 
     @Override
@@ -63,14 +59,13 @@ public class PackageInstalledRecyclerAdapter extends RecyclerView.Adapter<Packag
             mSystemAppIconImageView = itemView.findViewById(R.id.img_system_app);
         }
 
-        void bindView(InstalledPackageModel installedPackageModel) {
+        void bindView(InstalledPackageModel installedPackageModel, Context context) {
             mAppTextView.setText(installedPackageModel.getAppName());
             mPackageNameTextView.setText(installedPackageModel.getAppPackageName());
             mIconImageView.setImageDrawable(installedPackageModel.getAppIcon());
 
-            Drawable systemAppIcon = installedPackageModel.getSystemAppIcon();
-            if (systemAppIcon != null) {
-                mSystemAppIconImageView.setImageDrawable(systemAppIcon);
+            if (installedPackageModel.isSystemApp()) {
+                mSystemAppIconImageView.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_info_blue));
             } else
                 mSystemAppIconImageView.setImageDrawable(null);
         }

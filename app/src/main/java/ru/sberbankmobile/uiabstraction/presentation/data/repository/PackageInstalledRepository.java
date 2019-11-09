@@ -54,7 +54,7 @@ public class PackageInstalledRepository {
             InstalledPackageModel installedPackageModel = new InstalledPackageModel(
                     getAppName(packageName), packageName, getAppIcon(packageName));
 
-            installedPackageModel.setAppIcon(mContext.getDrawable(R.drawable.ic_info_blue));
+            installedPackageModel.indicateSystemApp(true);
 
             installedPackageModelList.add(installedPackageModel);
         }

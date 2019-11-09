@@ -27,7 +27,6 @@ public class MainActivity extends AppCompatActivity implements IMainActivity {
     private Button mButtonLoadPackages;
     private CheckBox mCheckBoxLoadSystemApps;
     private Spinner mSortingSpinner;
-    private SortingMode mSortingMode;
 
     private MainPresenter mMainPresenter;
 
@@ -78,7 +77,7 @@ public class MainActivity extends AppCompatActivity implements IMainActivity {
         mSortingSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                mSortingMode = SortingMode.values()[position];
+                mMainPresenter.setSortingMode(SortingMode.values()[position]);
             }
 
             @Override
@@ -101,7 +100,7 @@ public class MainActivity extends AppCompatActivity implements IMainActivity {
 
     @Override
     public void showData(List<InstalledPackageModel> modelList) {
-        PackageInstalledRecyclerAdapter recyclerAdapter = new PackageInstalledRecyclerAdapter(modelList, mSortingMode);
+        PackageInstalledRecyclerAdapter recyclerAdapter = new PackageInstalledRecyclerAdapter(modelList, getApplicationContext());
 
         mRecyclerView.setAdapter(recyclerAdapter);
     }
