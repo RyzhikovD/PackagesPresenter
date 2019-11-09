@@ -44,10 +44,11 @@ public class InstalledPackageModel {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         InstalledPackageModel that = (InstalledPackageModel) o;
-        return mIsSystemApp == that.mIsSystemApp &&
-                mAppName.equals(that.mAppName) &&
-                mPackageName.equals(that.mPackageName) &&
-                mAppIcon.equals(that.mAppIcon);
+
+        return Objects.equals(mAppName, that.mAppName) &&
+                Objects.equals(mPackageName, that.mPackageName) &&
+                Objects.equals(mAppIcon, that.mAppIcon) &&
+                Objects.equals(mIsSystemApp, that.mIsSystemApp);
     }
 
     @Override

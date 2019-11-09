@@ -1,7 +1,6 @@
 *.iml
 .gradle
 /local.properties
-app/src/test
 app/src/androidTest
 /.idea/
 /.idea/caches

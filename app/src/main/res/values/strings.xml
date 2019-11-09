@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">UIAbstraction</string>
+    <string name="app_name">Package Presenter</string>
     <string name="load_packages">Load Packages</string>
     <string name="system_applications">System Applications</string>
     <string name="application_icon">application_icon</string>
